@@ -1,0 +1,26 @@
+---
+id: groonga-meatup-2017
+base_name: groonga-family-2016
+tags:
+- rabbit
+- groonga
+- mroonga
+- pgroonga
+- full-text-search
+presentation_date: 2017-02-09
+version: 2017.2.9.0
+licenses:
+- CC BY-SA 4.0
+- CC BY 3.0
+slideshare_id: 
+speaker_deck_id: 
+ustream_id: 
+vimeo_id: 
+youtube_id: 
+author:
+  markup_language: :rd
+  name: Kouhei Sutou
+  email: kou@clear-code.com
+  rubygems_user: kou
+  slideshare_user: kou
+  speaker_deck_user: 

@@ -1,0 +1,36 @@
+= Groonga族2016
+
+: author
+   須藤功平
+: institution
+   株式会社クリアコード
+: content-source
+   Groonga Meatup 2017
+: date
+   2017-02-09
+: allotted-time
+   60m
+: theme
+   groonga
+
+= 最新情報：Groonga
+
+  # image
+  # src = images/groonga-logo.svg
+  # relative_width = 100
+
+(('tag:center'))
+ぐるんが
+
+= Groonga: 1
+
+索引指定の\n
+等価検索を\n
+サポート
+
+= 索引指定
+
+  column == 29
+  # ↑Groongaが適切な索引を選んで使用
+  Numbers.index == 29
+  # ↑指定した索引で検索
