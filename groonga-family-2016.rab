@@ -9,7 +9,7 @@
 : date
    2017-02-09
 : allotted-time
-   60m
+   30m
 : theme
    groonga
 
@@ -34,3 +34,240 @@
   # ↑Groongaが適切な索引を選んで使用
   Numbers.index == 29
   # ↑指定した索引で検索
+
+= Groonga: 2
+
+シーケンシャル\n
+サーチの\n
+パフォーマンス向上\n
+(('note:（索引なしでも速くなる）'))
+
+= 向上パターン
+
+  true
+  # ↑定数
+  x == 29
+  # ↑定数値との二項演算
+
+= Groonga: 3
+
+(({config_*}))\n
+コマンドを追加
+
+= (({config_*}))コマンド
+
+(('tag:center'))
+DB全体で使える\n
+キー・バリュー・ストア
+
+  * (({config_set}))：設定
+  * (({config_get}))：取得
+  * (({config_delete}))：削除
+
+(('tag:center'))
+(('tag:small'))
+((<"http://groonga.org/ja/docs/reference/configuration.html"|URL:http://groonga.org/ja/docs/reference/configuration.html>))
+
+= 用途例
+
+  * エイリアス情報を格納する\n
+    テーブル名の指定
+  * プラグインの設定
+    * 例：クエリー展開辞書のパス指定
+    * 例：ステミングの言語指定
+
+= Groonga: 4
+
+エイリアス\n
+サポート
+
+= エイリアス
+
+  * 同一テーブル・カラムに\n
+    複数の名前でアクセス
+    * 例：tags/TagsどちらでもOK
+
+(('tag:center'))
+(('tag:small'))
+((<"http://groonga.org/ja/docs/reference/alias.html"|URL:http://groonga.org/ja/docs/reference/alias.html>))
+
+= 用途例
+
+  * 既存クライアントを変更せずに\n
+    テーブル・カラムの名前を変更
+    * 古いテーブルを削除→\n
+      古い名前で新しいテーブルを参照
+  * ダウンタイムなしで\n
+    カラムの型を変更
+    * 変更後にエイリアスを切り替え
+
+= 使い方：設定
+
+  # Aliasesテーブルのキーを別名、
+  # real_nameカラムを実名とする
+  config_set \
+    alias.column \
+    Aliases.real_name
+
+= 使い方：登録
+
+  table_create Aliases \
+    TABLE_HASH_KEY ShortText
+  column_create Aliases real_name \
+    COLUMN_SCALAR ShortText
+  # Users.ageをUsers.yearsに展開
+  load --table Aliases
+  [
+  {"_key": "Users.age",
+   "real_name": "Users.years"}
+  ]
+
+= エイリアスの解決
+
+  * 再帰的
+    * Users.age→\n
+      Users.years→\n
+      People.years\n
+      もアリ
+
+= Groonga: 5
+
+(({lock_*}))\n
+コマンドを追加
+
+= (({lock_*}))コマンド
+
+  * (({lock_acquire}))：取得
+  * (({lock_release}))：解放
+
+= 用途
+
+テスト
+
+= Groonga: 6
+
+あいまい検索\n
+サポート
+
+= あいまい検索
+
+  * 多少表記が違ってもマッチ
+  * 索引を使うので高速
+  * 村上さん作
+
+(('tag:center'))
+(('tag:small'))
+((<"http://blog.createfield.com/entry/2016/02/28/014432"|URL:http://blog.createfield.com/entry/2016/02/28/014432>))
+
+= 用途例
+
+  * 名前・住所の検索
+    * 表記が揺れやすい
+  * オートコンプリート
+    * ユーザーの入力はミスが多め
+
+= 使い方：準備
+
+  # パトリシアトライなら
+  # 索引なしでキーをあいまい検索できる
+  table_create Products TABLE_PAT_KEY ShortText
+  load --table Products
+  [
+  {"_key": "Groonga"},
+  {"_key": "Grooonga"},
+  {"_key": "Mroonga"}
+  ]
+
+= 使い方：検索
+
+  select Products \
+    --filter 'fuzzy_search(_key, "Groonga")' \
+    --output_columns '_key, _score'
+  # ... 一致しているほど_scoreが高い ...
+  # ["Groonga", 2],
+  # ["Grooonga", 1], 多少違ってもヒット
+  # ["Mroonga", 1]   多少違ってもヒット
+  # ...
+
+= Groonga: 7
+
+(({object_inspect}))\n
+コマンドを追加
+
+= (({object_inspect}))
+
+  * テーブル・カラムの情報を返す
+    * レコード数とか総キーサイズとか
+  * 用途：調査
+
+(('tag:center'))
+(('tag:small'))
+((<"http://groonga.org/ja/docs/reference/commands/object_inspect.html"|URL:http://groonga.org/ja/docs/reference/commands/object_inspect.html>))
+
+= Groonga: 8
+
+ベクターの\n
+指定位置要素の\n
+索引検索を\n
+サポート
+
+= 例
+
+  # agesの3番目の要素が29未満ならヒット
+  # agesの1番目の要素が29未満でも関係ない
+  ages[2] < 29
+
+  # 索引にはWITH_POSITIONを指定すること！
+
+= Groonga: 9
+
+(({object_remove}))\n
+コマンドを追加
+
+= (({object_remove}))
+
+  * テーブル・カラム…を削除
+    * 壊れていても強制削除可！
+    * 要注意コマンド
+  * 用途：障害対応
+
+(('tag:center'))
+(('tag:small'))
+((<"http://groonga.org/ja/docs/reference/commands/object_remove.html"|URL:http://groonga.org/ja/docs/reference/commands/object_remove.html>))
+
+= Groonga: 10
+
+クエリー最適化
+
+= AND+非等価→AND NOT+等価
+
+  # 最適化前（索引を使えない）
+  XXX && column != xxx
+  # 最適化後（索引を使える）
+  XXX &! column == xxx
+
+= Groonga: 11
+
+Memcached\n
+プロトコルでの\n
+カラム値の\n
+取得・更新を\n
+サポート
+
+= 使い方
+
+  # Memos.contentにMemcachedプロトコルでアクセス
+  % groonga \
+      --protocol memcached \
+      --memcached-column Memos.content \
+      -s db
+
+= 用途例
+
+  * 永続化対応キーバリューストア
+  * 頻繁な参照・更新処理の高速化
+    * HTTPより速いはず
+    * 索引は更新される\n
+      →更新したデータはHTTPで全文検索
+
+# TODO: 6.0.1から
