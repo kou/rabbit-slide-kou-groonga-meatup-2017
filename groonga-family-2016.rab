@@ -266,8 +266,88 @@ Memcached\n
 
   * 永続化対応キーバリューストア
   * 頻繁な参照・更新処理の高速化
-    * HTTPより速いはず
+    * HTTPより速い
     * 索引は更新される\n
       →更新したデータはHTTPで全文検索
 
-# TODO: 6.0.1から
+= 参考：hog
+
+  * GroongaベースのKVS
+  * 既存DBのカラムを読み書き
+    * --protocol memcachedと同様
+    * ↑より軽そう
+
+(('tag:center'))
+(('tag:small'))
+((<"https://github.com/genki/hog"|URL:https://github.com/genki/hog>))
+
+= Groonga: 12
+
+ハッシュ\n
+テーブルの\n
+最大\n
+総キーサイズUP\n
+4GiB→1TiB
+
+= 使い方
+
+  # _
+  # デフォルトは4GiBのまま
+  # KEY_LARGE指定で1TiBに
+  table_create
+    --name Large \
+    --flags TABLE_HASH_KEY|KEY_LARGE \
+    --key_type ShortText
+
+= Groonga: 13
+
+即\n
+シャットダウン\n
+機能
+
+= 使い方
+
+  # _
+  # デフォルトは処理中の接続が
+  # 終わってからシャットダウン
+  # immediate：処理中の接続が
+  # あってもすぐにシャットダウン
+  shutdown --mode immediate
+
+= 用途例
+
+  * Windowsシャットダウン時
+    * 指定時間内に終了しないと強制終了
+    * 強制終了よりimmediateの方がマシ
+    * (('note:（Windowsには指定時間を伸ばすAPIアリ）'))
+
+= Groonga: 14
+
+依存テーブル\n
+依存カラムも\n
+一緒に\n
+テーブル削除
+
+= 対象例
+
+  table_create Numbers \
+    TABLE_PAT_KEY Int64
+  table_create IDs \
+    TABLE_HASH_KEY Numbers
+  # ↑IDsはNumbersを参照
+  table_remove Numbers
+  # ↑Numbersは参照されている→エラー
+
+= 使い方
+
+  # --dependent yesを指定する
+  # デフォルトはno
+  table_remove Numbers \
+    --dependent yes
+  # IDsも一緒に削除
+
+(('tag:center'))
+(('tag:small'))
+((<"http://groonga.org/ja/docs/reference/commands/table_remove.html"|URL:http://groonga.org/ja/docs/reference/commands/table_remove.html>))
+
+# TODO: 6.0.2から
