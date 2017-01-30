@@ -350,4 +350,44 @@ Memcached\n
 (('tag:small'))
 ((<"http://groonga.org/ja/docs/reference/commands/table_remove.html"|URL:http://groonga.org/ja/docs/reference/commands/table_remove.html>))
 
-# TODO: 6.0.2から
+= Groonga: 15
+
+HTTPでの\n
+タイムアウト\n
+対応
+
+= タイムアウト
+
+  * タイムアウトなし\n
+    →クライアント側で切断
+    * サーバーのCPUを使い続ける
+  * タイムアウトあり\n
+    →サーバー側で中断
+    * サーバーのCPUが空く
+
+= 使い方
+
+  # 2.9秒で完了しなかったら
+  # 408 Request Timeoutを返す
+  /d/select.json?...&
+    request_timeout=2.9
+
+(('tag:center'))
+(('tag:small'))
+((<"http://groonga.org/ja/docs/reference/command/request_timeout.html"|URL:http://groonga.org/ja/docs/reference/command/request_timeout.html>))
+
+= Groonga: 16
+
+多段\n
+ドリルダウン\n
+サポート
+
+= 多段ドリルダウン
+
+  * ドリルダウン結果を\n
+    ドリルダウン
+  * 例：大中小分類
+
+# TODO: 例
+
+# TODO: 6.0.3から
