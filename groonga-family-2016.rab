@@ -390,4 +390,678 @@ HTTPでの\n
 
 # TODO: 例
 
-# TODO: 6.0.3から
+= Groonga: 17
+
+ウィンドウ関数\n
+サポート
+
+= ウィンドウ関数
+
+  (1) 特定の軸のレコード毎に処理
+      * 普通の関数は1レコード毎に処理
+      * ドリルダウンは全レコードを処理
+  (2) 指定したソート順で処理
+
+= Groonga: 18
+
+スライス\n
+サポート
+
+= スライス
+
+  * OLAPの用語\n
+    (('note:ドリルダウンもそう'))
+    * 軸を1つ決めて絞り込む
+  * 例：全期間のログ中今年のログだけに着目
+    * 「今年」という軸で絞り込んでいる
+
+(('tag:center'))
+(('tag:small'))
+((<"https://en.wikipedia.org/wiki/OLAP_cube"|URL:https://en.wikipedia.org/wiki/OLAP_cube>))
+
+= 用途例
+
+  * TODO
+
+= Groonga: 20
+
+数値・時間の\n
+分類関数を\n
+追加\n
+(('note:（分類関数という言い回しはよくない気がする）'))
+
+= 分類関数
+
+  * 値をグループ化
+    * 例：100-199は100、200-299は200
+    * 例：2017年1月も2017年2月も2017年
+
+= 用途例
+
+  * 価格帯でのドリルダウン
+  * 年や月でのドリルダウン
+
+= 使い方
+
+  select Logs \
+    --columns[year].stage filtered \
+    --columns[year].type UInt16 \
+    --columns[year].flags COLUMN_SCALAR \
+    --columns[year].value \
+      'time_classify_year(timestamp)' \
+    --output_columns timestamp,year
+    # yearカラムに年だけが入っている
+
+= Groonga: 21
+
+コマンド\n
+バージョン3\n
+追加
+
+= コマンドバージョン3
+
+  * レスポンスのフォーマット変更
+    * 配列→オブジェクト
+  * デフォルトは1のまま
+
+= Groonga: 22
+
+(({query_expand}))\n
+コマンドを追加
+
+= (({query_expand}))コマンド
+
+  * クエリー展開結果を返す
+  * 同義語の確認に便利
+
+= 使用例
+
+TODO
+
+= Groonga: 23
+
+デフォルトの\n
+ロック\n
+タイムアウト\n
+短縮
+
+= ロックタイムアウト
+
+  * ロック獲得を諦めるまでの時間
+  * 2.7時間→15分
+    * クラッシュによるロック残留に\n
+      気づくまでの時間が短くなった
+
+= Groonga: 24
+
+テーブルの\n
+最大レコード数\n
+更新
+
+= 最大レコード数
+
+  * 従来：2(('sup:28'))-1（約2億7千万件）
+  * 新：
+    * NO_KEY, PAT_KEY: 約10億件
+    * HASH_KEY: 約5億件
+    * DAT_KEY: 約2億7千万件
+
+= Groonga: 25
+
+Zstandard対応
+
+= Zstandard
+
+  * 新しい圧縮ライブラリー
+    * zlib並の圧縮率
+    * zlibの数倍の速度
+  * カラム値の圧縮に利用可能
+
+= 使い方
+
+TODO
+
+= Groonga: 26
+
+選択的\n
+カラム圧縮\n
+対応
+
+= 選択的カラム圧縮
+
+  * 小さなデータの圧縮は無意味
+    * ヘッダーの追加でむしろ大きくなる
+    * ムダにリソースを使う
+  * ある程度大きなデータだけ圧縮
+    * 257バイト以上のデータのみ圧縮
+    * →カジュアルに圧縮指定できる！
+
+= Groonga: 27
+
+(({load}))コマンドが\n
+レコードIDの\n
+返却を\n
+サポート
+
+= (({load}))コマンド
+
+  * バルクロード用コマンド
+    * 何件ロードしたかだけ返す
+    * ロードしたレコードのIDは返さない
+  * 1件のみロードしたい時に不便
+    * 追加したらIDを知りたい！
+
+= 使い方
+
+TODO
+
+= Groonga: 28
+
+速くなった！\n
+検索も！\n
+更新も！
+
+= Groonga: まとめ
+
+便利になって\n
+速くもなった
+
+= 最新情報：Mroonga
+
+  # image
+  # src = images/mroonga-logo.svg
+  # relative_width = 100
+
+(('tag:center'))
+むるんが
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= Mroonga: おしらせ
+
+初心者向けの電子書籍ができました！
+
+= Mroonga: 1
+
+(({mroonga_}))\n
+(({normalize}))\n
+UDFを追加\n
+(('note:UDF: User Defined Function'))
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= (({mroonga_normalize}))
+
+  * 正規化した文字列を返す
+  * UDFなので全文検索索引以外\n
+    でも使える
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= Mroonga: 2
+
+(({*SS}))プラグマ追加
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= (({*SS}))プラグマ
+
+  # coderay sql
+  SELECT ...
+    WHERE
+      MATCH (title)
+  -- Groongaの検索条件を↓で使える
+      AGAINST ('*SS ...'
+               IN BOOLEAN MODE);
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= Groongaの検索条件
+
+  * 豊富な検索処理
+    * 例：あいまい検索
+  * 複数の索引で検索可→速い！
+    * MySQLは1つしか使えない
+
+(('tag:center'))
+(('tag:small'))
+書式：((<"http://groonga.org/ja/docs/reference/grn_expr/script_syntax.html"|URL:http://groonga.org/ja/docs/reference/grn_expr/script_syntax.html>))
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= Mroonga: 3
+
+(({mroonga_}))\n
+(({snippet_html}))\n
+UDFが便利に
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= (({mroonga_snippet_html}))
+
+  # coderay sql
+  SELECT
+    mroonga_snippet_html(content,
+                         '+肉 -魚 +野菜' AS query)
+    -- クエリーをそのまま指定できる↑
+    -- （肉、野菜は対象。魚は非対象。）
+    -- 「AS query」がポイント
+    ...
+    WHERE
+      MATCH (content)
+      AGAINST ('+肉 -魚 +野菜' IN BOOLEAN MODE);
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= Mroonga: 4
+
+マルチバイトな\n
+カラム名に対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= マルチバイトなカラム名
+
+  * 例：日本語カラム名
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= Mroonga: 5
+
+(({FOREIGN KEY}))制約\n
+対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= (({FOREIGN KEY}))制約対応
+
+  * (({INSERT}))時のみ
+  * (({UPDATE}))・(({DELETE}))は未対応
+    * 今後対応予定
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= Mroonga: 6
+
+最新\n
+MySQL・MariaDB\n
+対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= 対応バージョン
+
+  * MySQL: 5.7.17対応
+    * 8.0.0は未確認
+  * MariaDB: 10.2.3対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= Mroonga: まとめ
+
+  * 便利になった！
+  * 速くもなった！
+    * Groongaが速くなったから
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= 最新情報：PGroonga
+
+  # image
+  # src = images/pgroonga-logo.svg
+  # relative_width = 100
+
+(('tag:center'))
+ぴーじーるんが
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 1
+
+(({TABLESPACE}))\n
+対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= (({TABLESPACE}))
+
+  * 別のパスにファイルを置く機能
+    * 使用例：索引はSSDに置く
+
+(('tag:center'))
+(('tag:small'))
+((<"https://www.postgresql.org/docs/current/static/manage-ag-tablespaces.html"|URL:https://www.postgresql.org/docs/current/static/manage-ag-tablespaces.html>))
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 使い方
+
+TODO
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 2
+
+複合主キー対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 複合主キー
+
+  * 複数のカラムを主キーにする
+  * (({pgroonga.score}))を使うには\n
+    主キーが必要
+    * 複合主キーでも(({pgroonga.score}))を使えるようになった
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 3
+
+マルチバイトな\n
+カラム名に対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= マルチバイトなカラム名
+
+  * 例：日本語のカラム名
+  * 制限：UTF-8のみ対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 4
+
+類似文書検索対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 使い方
+
+TODO
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 5
+
+前方一致検索対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 使い方
+
+TODO
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 6
+
+前方一致RK検索対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 使い方
+
+TODO
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 7
+
+(({pgroonga.}))\n
+(({highlight_html}))追加
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= (({pgroonga.highlight_html}))
+
+  * テキスト中のキーワードをハイライト
+  * TODO
+
+(({pgroonga.query_extract_keywords}))もあわせて
+
+= 使い方
+
+TODO
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 8
+
+ヒット件数の見積対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= ヒット件数の見積
+
+  * 実行計画決定に利用
+    * 見積精度が上がると\n
+      適切な計画を選びやすくなる
+    * →速くなる！
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 9
+
+ストリーミング\n
+レプリ\n
+ケーション\n
+対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= レプリケーション
+
+  * 検索性能が足りないときに\n
+    検索専用ノードを増やして対応できる
+
+(('tag:center'))
+(('tag:small'))
+((<"https://pgroonga.github.io/ja/reference/replication.html"|URL:https://pgroonga.github.io/ja/reference/replication.html>))
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 10
+
+Zstandard\n
+対応
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 使い方
+
+TODO
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: 11
+
+生Groonga検索\n
+対応強化
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 生Groonga検索
+
+  * PostgreSQLを介さずにGroongaで検索
+    * (({pgroonga.command}))を使う
+
+= 使い方
+
+TODO
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= PGroonga: まとめ
+
+  * 便利になった！
+  * 速くもなった！
+    * Groongaが速くなったから
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= まとめ
+
+  * 2016年はGroongaをすごくがんばった
+    * 速くもなったし便利にもなった
+  * ベースのGroongaが速くなったので\n
+    関連プロダクトも速くなった
