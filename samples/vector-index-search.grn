@@ -1,0 +1,16 @@
+table_create Teams TABLE_NO_KEY
+column_create Teams ages \
+  COLUMN_VECTOR UInt8
+
+table_create Ages TABLE_PAT_KEY UInt8
+column_create Ages teams_ages \
+  COLUMN_INDEX|WITH_POSITION Teams ages
+
+load --table Teams
+[
+{"ages": [1,  30, 2]},
+{"ages": [30, 28, 29]}
+]
+select Teams \
+  --filter 'ages[1] < 29' \
+  --output_pretty yes

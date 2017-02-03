@@ -13,6 +13,15 @@
 : theme
    groonga
 
+= 2016年の概要
+
+  * Groongaが凄くよくなった
+    * 速くもなったし便利にもなった
+  * Mroongaはそこそこ
+    * でもGroongaがよくなったので\n
+      Mroongaもよくなった
+  * PGroongaも凄くよくなった
+
 = 最新情報：Groonga
 
   # image
@@ -153,7 +162,7 @@ DB全体で使える\n
 
   * 多少表記が違ってもマッチ
   * 索引を使うので高速
-  * 村上さん作
+  * @naoa_y作
 
 (('tag:center'))
 (('tag:small'))
@@ -213,11 +222,31 @@ DB全体で使える\n
 
 = 例
 
-  # agesの3番目の要素が29未満ならヒット
-  # agesの1番目の要素が29未満でも関係ない
-  ages[2] < 29
+  # agesの1番目の要素が29未満ならヒット
+  # agesの0番目の要素が29未満でも関係ない
+  ages[1] < 29
 
+= 使い方：索引
+
+  table_create Teams TABLE_NO_KEY
+  column_create Teams ages \
+    COLUMN_VECTOR UInt8
+
+  table_create Ages TABLE_PAT_KEY
   # 索引にはWITH_POSITIONを指定すること！
+  column_create Ages teams_age \
+    COLUMN_INDEX|WITH_POSITION Teams age
+
+= 使い方：検索
+
+  load --table Teams
+  [
+  {"ages": [ 1, 30,  2]},
+  {"ages": [30, 28, 29]}
+  ]
+  select Teams --filter 'ages[1] < 29'
+  # "ages": [ 1, 30,  2]はヒットしない
+  # "ages": [30, 28, 29]だけヒット
 
 = Groonga: 9
 
@@ -254,13 +283,42 @@ Memcached\n
 取得・更新を\n
 サポート
 
-= 使い方
+= 使い方：スキーマ
 
-  # Memos.contentにMemcachedプロトコルでアクセス
+  # テーブルのキーはShortText
+  table_create Memos \
+    TABLE_HASH_KEY ShortText
+  # カラムはスカラーでText
+  # （ShortText/LongTextも可）
+  column_create Memos content \
+    COLUMN_SCALAR Text
+
+= 使い方：サーバー
+
+  # Memcachedプロトコルで
+  # Memos.contentにアクセス
   % groonga \
       --protocol memcached \
+      --port 11211 \
       --memcached-column Memos.content \
       -s db
+
+= 使い方：クライアント
+
+  # coderay python
+  import bmemcached
+  servers = ("127.0.0.1:11211",)
+  client = bmemcached.Client(servers)
+  print(client.get("abc")) # None
+  client.set("abc", "Hello")
+  print(client.get("abc")) # "Hello"
+
+= 使い方：確認
+
+  % groonga db select Memos
+  # {"_key":    "abc",   # キー
+  #  "content": "Hello", # バリュー
+  #  ...他にいくつかメタデータ...}
 
 = 用途例
 
@@ -272,10 +330,12 @@ Memcached\n
 
 = 参考：hog
 
-  * GroongaベースのKVS
+  * GroongaベースのKVS\n
+    by @takiuchi
   * 既存DBのカラムを読み書き
     * --protocol memcachedと同様
-    * ↑より軽そう
+    * ↑より軽そうで機能が多い
+  * 独自プロトコル
 
 (('tag:center'))
 (('tag:small'))
@@ -294,7 +354,7 @@ Memcached\n
   # _
   # デフォルトは4GiBのまま
   # KEY_LARGE指定で1TiBに
-  table_create
+  table_create \
     --name Large \
     --flags TABLE_HASH_KEY|KEY_LARGE \
     --key_type ShortText
@@ -318,6 +378,7 @@ Memcached\n
 
   * Windowsシャットダウン時
     * 指定時間内に終了しないと強制終了
+    * 強制終了するとDB破損の可能性アリ
     * 強制終了よりimmediateの方がマシ
     * (('note:（Windowsには指定時間を伸ばすAPIアリ）'))
 
@@ -340,7 +401,7 @@ Memcached\n
 
 = 使い方
 
-  # --dependent yesを指定する
+  # --dependent yesを指定
   # デフォルトはno
   table_remove Numbers \
     --dependent yes
@@ -360,7 +421,7 @@ HTTPでの\n
 
   * タイムアウトなし\n
     →クライアント側で切断
-    * サーバーのCPUを使い続ける
+    * 切断後もサーバーのCPUは空かない
   * タイムアウトあり\n
     →サーバー側で中断
     * サーバーのCPUが空く
@@ -387,6 +448,8 @@ HTTPでの\n
   * ドリルダウン結果を\n
     ドリルダウン
   * 例：大中小分類
+  * データを正規化できる
+    * データの更新に強い
 
 # TODO: 例
 
@@ -412,12 +475,24 @@ HTTPでの\n
   * OLAPの用語\n
     (('note:ドリルダウンもそう'))
     * 軸を1つ決めて絞り込む
-  * 例：全期間のログ中今年のログだけに着目
+  * 例：\n
+    全期間中今年のログだけに着目
     * 「今年」という軸で絞り込んでいる
 
 (('tag:center'))
 (('tag:small'))
 ((<"https://en.wikipedia.org/wiki/OLAP_cube"|URL:https://en.wikipedia.org/wiki/OLAP_cube>))
+
+= スライスのイメージ
+
+  # image
+  # src = images/OLAP_slicing.png
+  # relative_width = 100
+
+(('tag:center'))
+(('tag:x-small'))
+CC BY-SA 3.0 by Infopedian\n
+((<"https://commons.wikimedia.org/wiki/File:OLAP_slicing.png"|URL:https://commons.wikimedia.org/wiki/File:OLAP_slicing.png>))
 
 = 用途例
 
@@ -584,6 +659,9 @@ TODO
 = Mroonga: おしらせ
 
 初心者向けの電子書籍ができました！
+
+((<"https://grnbook-ja.tumblr.com/"|URL:https://grnbook-ja.tumblr.com/>))\n
+@KitaitiMakoto
 
 = Mroonga: 1
 
@@ -1064,7 +1142,10 @@ TODO
 
 = まとめ
 
-  * 2016年はGroongaをすごくがんばった
+  * Groongaが凄くよくなった
     * 速くもなったし便利にもなった
-  * ベースのGroongaが速くなったので\n
-    関連プロダクトも速くなった
+  * Mroongaの本ができた
+    * ((<"https://grnbook-ja.tumblr.com/"|URL:https://grnbook-ja.tumblr.com/>))\n
+      by @KitaitiMakoto
+  * PGroongaも凄くよくなった
+

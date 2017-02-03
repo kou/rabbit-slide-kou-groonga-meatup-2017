@@ -22,6 +22,21 @@ CC BY 3.0
 
   * Groongaプロジェクト
 
+==== スライスの画像
+
+images/OLAP_slicing.png
+
+CC BY-SA 3.0
+
+原著作者名は以下の通りです。
+
+  * Infopedian
+
+関連リンクは以下の通りです。
+
+  * ((<WikipediaのOLAP cubeのページ|URL:https://en.wikipedia.org/wiki/OLAP_cube>))
+  * ((<画像の詳細情報のページ|URL:https://commons.wikimedia.org/wiki/File:OLAP_slicing.png>))
+
 == 作者向け
 
 === 表示

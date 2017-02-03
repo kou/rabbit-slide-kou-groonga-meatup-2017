@@ -1,0 +1,11 @@
+table_create Products TABLE_PAT_KEY ShortText
+load --table Products
+[
+{"_key": "Groonga"},
+{"_key": "Grooonga"},
+{"_key": "Mroonga"}
+]
+select Products \
+  --filter 'fuzzy_search(_key, "Groonga")' \
+  --output_columns '_key, _score' \
+  --output_pretty yes
