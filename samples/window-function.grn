@@ -1,0 +1,22 @@
+table_create Logs TABLE_NO_KEY
+column_create Logs product COLUMN_SCALAR ShortText
+column_create Logs sales COLUMN_SCALAR UInt32
+column_create Logs day COLUMN_SCALAR Time
+
+load --table Logs
+[
+{"product", "A", "sales": 100, "day": "2017-02-01 00:00:00"},
+{"product", "B", "sales": 150, "day": "2017-02-01 00:00:00"},
+{"product", "A", "sales": 120, "day": "2017-02-02 00:00:00"},
+{"product", "A", "sales": 130, "day": "2017-02-03 00:00:00"},
+{"product", "B", "sales": 110, "day": "2017-02-03 00:00:00"}
+]
+
+select Logs \
+  --columns[amount].stage initial \
+  --columns[amount].type UInt32 \
+  --columns[amount].value 'window_sum(sales)' \
+  --columns[amount].window.group_keys product \
+  --columns[amount].window.sort_keys day \
+  --output_columns *,amount \
+  --output_pretty yes

@@ -1,0 +1,73 @@
+table_create LargeCategories TABLE_HASH_KEY ShortText
+
+table_create MediumCategories TABLE_HASH_KEY ShortText
+column_create MediumCategories large COLUMN_SCALAR LargeCategories
+
+table_create SmallCategories TABLE_HASH_KEY ShortText
+column_create SmallCategories medium COLUMN_SCALAR MediumCategories
+
+table_create Items TABLE_HASH_KEY ShortText
+column_create Items category COLUMN_SCALAR SmallCategories
+
+load --table LargeCategories
+[
+{"_key": "家電"},
+{"_key": "コンピューター"}
+]
+
+load --table MediumCategories
+[
+{"_key": "冷蔵庫", "large": "家電"},
+{"_key": "洗濯機", "large": "家電"},
+{"_key": "ノートパソコン", "large": "コンピューター"},
+{"_key": "タブレット", "large": "コンピューター"}
+]
+
+load --table SmallCategories
+[
+{"_key": "2ドア冷蔵庫", "medium": "冷蔵庫"},
+{"_key": "3ドア冷蔵庫", "medium": "冷蔵庫"},
+{"_key": "ドラム式洗濯機", "medium": "洗濯機"},
+{"_key": "ThinkPad", "medium": "ノートパソコン"},
+{"_key": "Let's NOTE", "medium": "ノートパソコン"},
+{"_key": "VAIO", "medium": "ノートパソコン"},
+{"_key": "Nexus", "medium": "タブレット"}
+]
+
+load --table Items
+[
+{"_key": "ThinkPad E470", "category": "ThinkPad"},
+{"_key": "ThinkPad E570", "category": "ThinkPad"},
+{"_key": "Nexus 7", "category": "Nexus"}
+{"_key": "VAIO C15", "category": "VAIO"}
+]
+
+select Items \
+  --drilldowns[small_categories].keys category \
+  --drilldowns[small_categories].output_columns _key,medium,_nsubrecs \
+  --drilldowns[medium_categories].keys medium \
+  --drilldowns[medium_categories].table small_categories \
+  --drilldowns[medium_categories].calc_target _nsubrecs \
+  --drilldowns[medium_categories].calc_types SUM \
+  --drilldowns[medium_categories].output_columns _key,large,_sum \
+  --drilldowns[large_categories].keys large \
+  --drilldowns[large_categories].table medium_categories \
+  --drilldowns[large_categories].calc_target _sum \
+  --drilldowns[large_categories].calc_types SUM \
+  --drilldowns[large_categories].output_columns _key,_sum \
+  --output_pretty yes
+
+select Items \
+  --drilldowns[s].keys category \
+  --drilldowns[s].output_columns _key,medium,_nsubrecs \
+  --drilldowns[m].keys medium \
+  --drilldowns[m].table s \
+  --drilldowns[m].calc_target _nsubrecs \
+  --drilldowns[m].calc_types SUM \
+  --drilldowns[m].output_columns _key,large,_sum \
+  --drilldowns[l].keys large \
+  --drilldowns[l].table m \
+  --drilldowns[l].calc_target _sum \
+  --drilldowns[l].calc_types SUM \
+  --drilldowns[l].output_columns _key,large,_sum \
+  --output_pretty yes

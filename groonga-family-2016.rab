@@ -447,11 +447,32 @@ HTTPでの\n
 
   * ドリルダウン結果を\n
     ドリルダウン
-  * 例：大中小分類
+    * 利用例：大中小分類それぞれのヒット件数を1リクエストで集計
   * データを正規化できる
     * データの更新に強い
+  * @naoa_y作
 
-# TODO: 例
+= イメージ
+
+  # image
+  # src = images/multistage-drilldowns.svg
+  # relative_width = 100
+
+= 使い方
+
+  select Items \
+    --drilldowns[s].keys category \  # 小分類でドリルダウン
+    --drilldowns[s].output_columns _key,medium,_nsubrecs \
+    --drilldowns[m].table s \        # 小分類でのドリルダウン結果を
+    --drilldowns[m].keys medium \    # 中分類でドリルダウン
+    --drilldowns[m].calc_target _nsubrecs \
+    --drilldowns[m].calc_types SUM \ # 件数（_nsubrecs）を合計
+    --drilldowns[m].output_columns _key,large,_sum \
+    --drilldowns[l].table m \        # 中分類でのドリルダウン結果を
+    --drilldowns[l].keys large \     # 大分類でドリルダウン
+    --drilldowns[l].calc_target _sum \
+    --drilldowns[l].calc_types SUM \ # 合計（_sum）をさらに合計
+    --drilldowns[l].output_columns _key,large,_sum
 
 = Groonga: 17
 
@@ -460,10 +481,37 @@ HTTPでの\n
 
 = ウィンドウ関数
 
-  (1) 特定の軸のレコード毎に処理
+  (1) グループ毎に処理
       * 普通の関数は1レコード毎に処理
       * ドリルダウンは全レコードを処理
   (2) 指定したソート順で処理
+
+= 用途例
+
+  * データ分析
+  * 例：
+    * 商品毎（商品でグループ化）の\n
+      売上累計（日付でソート）
+
+= 商品毎の売上累計
+
+  # image
+  # src = images/window-function.svg
+  # relative_height = 100
+
+= 使い方
+
+  select Logs \
+    # 商品毎の累計売上はamount一時カラムに入れる
+    --columns[amount].stage initial \
+    --columns[amount].type UInt32 \
+    # window_sum()は累計するウィンドウ関数
+    --columns[amount].value 'window_sum(sales)' \
+    # 製品でグループ化
+    --columns[amount].window.group_keys product \
+    # 日付でソートした順に処理
+    --columns[amount].window.sort_keys day \
+    --output_columns *,amount # 出力
 
 = Groonga: 18
 
