@@ -1,0 +1,8 @@
+table_create Numbers TABLE_HASH_KEY Int32
+load --table Numbers \
+     --output_ids yes \
+     --command_version 3 --output_pretty yes
+[
+{"_key": 29},
+{"_key": "Hello"}
+]

@@ -1,0 +1,11 @@
+table_create Words \
+  TABLE_HASH_KEY ShortText
+column_create Words synonyms \
+  COLUMN_VECTOR ShortText
+
+load --table Words
+[
+{"_key": "焼肉", "synonyms": ["焼肉", "焼き肉"]}
+]
+
+query_expand Words.synonyms 焼肉

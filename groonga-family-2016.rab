@@ -473,7 +473,7 @@ HTTPでの\n
 = スライス
 
   * OLAPの用語\n
-    (('note:ドリルダウンもそう'))
+    (('note:豆知識：ドリルダウンもOLAPの用語'))
     * 軸を1つ決めて絞り込む
   * 例：\n
     全期間中今年のログだけに着目
@@ -496,7 +496,22 @@ CC BY-SA 3.0 by Infopedian\n
 
 = 用途例
 
-  * TODO
+(('tag:center'))
+1リクエストで\n
+オススメ絞り込み結果も表示
+
+  # image
+  # src = images/slice-example.svg
+  # relative_width = 100
+
+= 使い方
+
+  select Works \
+    --match_columns description \
+    --query Webアプリ \
+    # ↑までが通常の検索
+    # ↓で追加の絞り込み
+    --slices[ruby].filter language:Ruby
 
 = Groonga: 20
 
@@ -539,6 +554,21 @@ CC BY-SA 3.0 by Infopedian\n
     * 配列→オブジェクト
   * デフォルトは1のまま
 
+= 出力例
+
+  status --command_version 3
+  # {
+  #   "header": {
+  #     "return_code": 0,
+  #     "start_time": 1486275098.294436,
+  #     "elapsed_time": 0.00002,
+  #   },
+  #   "body": {
+  #     "alloc_count": 275,
+  #     ...
+  #   }
+  # }
+
 = Groonga: 22
 
 (({query_expand}))\n
@@ -549,9 +579,25 @@ CC BY-SA 3.0 by Infopedian\n
   * クエリー展開結果を返す
   * 同義語の確認に便利
 
-= 使用例
+= 使用例：準備
 
-TODO
+  table_create Words TABLE_HASH_KEY ShortText
+  # 類義語のリスト
+  column_create Words synonyms \
+    COLUMN_VECTOR ShortText
+  # 「焼肉」は「焼き肉」とも書かれる
+  load --table Words
+  [
+  {"_key": "焼肉",
+   "synonyms": ["焼肉", "焼き肉"]}
+  ]
+
+= 使用例：展開
+
+  query_expand Words.synonyms 焼肉
+  # "((焼肉) OR (焼き肉))"
+  # ↑「焼肉」で検索すると
+  # 「焼肉」と「焼き肉」のORで検索
 
 = Groonga: 23
 
@@ -594,7 +640,12 @@ Zstandard対応
 
 = 使い方
 
-TODO
+  table_create Memos \
+    TABLE_HASH_KEY ShortText
+  # COMPRESS_ZSTDを指定するだけ
+  column_create Memos content \
+    COLUMN_SCALAR|COMPRESS_ZSTD \
+    Text
 
 = Groonga: 26
 
@@ -628,9 +679,52 @@ TODO
 
 = 使い方
 
-TODO
+  # _keyは数値
+  table_create Numbers TABLE_HASH_KEY Int32
+  # --output_ids yesと--command_version 3の指定が必要！
+  load --table Numbers \
+       --output_ids yes --command_version 3
+  [
+  {"_key": 29},     # OK
+  {"_key": "Hello"} # NG
+  ]
+  # "body": {
+  #   "loaded_ids": [1, 0]
+  # }
 
 = Groonga: 28
+
+(({load}))コマンドが\n
+エラー情報の\n
+返却を\n
+サポート
+
+= (({load}))コマンド
+
+  * バルクロード用コマンド
+    * エラーはログに記録のみ
+    * バッチのときは妥当な挙動
+  * インタラクティブなとき
+    * ログ確認は不便
+    * エラーをすぐに確認したい！
+
+= 使い方
+
+  # --output_errors yesと--command_version 3の指定が必要！
+  load --table Numbers \
+       --output_errors yes --command_version 3
+  [
+  {"_key": 29},     # OK
+  {"_key": "Hello"} # NG
+  ]
+  # "body": {
+  #   "errors": [
+  #     {"return_code": 0, "message": null},
+  #     {"return_code": -22, "message": "failed to..."}
+  #   ]
+  # }
+
+= Groonga: ((*29*))
 
 速くなった！\n
 検索も！\n

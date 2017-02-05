@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="253.36469mm"
+   height="116.89996mm"
+   viewBox="0 0 253.36469 116.89995"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.0 r15299"
+   sodipodi:docname="slice-example.svg">
+  <defs
+     id="defs2">
+    <marker
+       inkscape:isstock="true"
+       style="overflow:visible"
+       id="marker5049"
+       refX="0"
+       refY="0"
+       orient="auto"
+       inkscape:stockid="Arrow1Mend">
+      <path
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         id="path5047"
+         inkscape:connector-curvature="0" />
+    </marker>
+    <marker
+       inkscape:stockid="Arrow1Mend"
+       orient="auto"
+       refY="0"
+       refX="0"
+       id="Arrow1Mend"
+       style="overflow:visible"
+       inkscape:isstock="true"
+       inkscape:collect="always">
+      <path
+         id="path4718"
+         d="M 0,0 5,-5 -12.5,0 5,5 Z"
+         style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.00000003pt;stroke-opacity:1"
+         transform="matrix(-0.4,0,0,-0.4,-4,0)"
+         inkscape:connector-curvature="0" />
+    </marker>
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="792.26313"
+     inkscape:cy="240.43354"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="false"
+     inkscape:window-width="1641"
+     inkscape:window-height="840"
+     inkscape:window-x="65"
+     inkscape:window-y="6"
+     inkscape:window-maximized="0"
+     fit-margin-top="5"
+     fit-margin-left="5"
+     fit-margin-right="5"
+     fit-margin-bottom="5" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="レイヤー 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-19.249466,-0.33015755)">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:6.61458302px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="19.510674"
+       y="14.228839"
+       id="text4487"><tspan
+         sodipodi:role="line"
+         id="tspan4485"
+         x="19.510674"
+         y="14.228839"
+         style="stroke-width:0.26458332px">「Webアプリ」の仕事の検索結果（29件）</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1em;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="23.970413"
+       y="30.927347"
+       id="text4491"><tspan
+         sodipodi:role="line"
+         x="23.970413"
+         y="30.927347"
+         style="line-height:1em;writing-mode:lr-tb;stroke-width:0.26458332px"
+         id="tspan4602">1. ECサイト開発（PHP）</tspan><tspan
+         sodipodi:role="line"
+         x="23.970413"
+         y="41.721107"
+         style="line-height:1em;writing-mode:lr-tb;stroke-width:0.26458332px"
+         id="tspan4642">2. SNS開発（Ruby）</tspan><tspan
+         sodipodi:role="line"
+         x="23.970413"
+         y="52.514866"
+         style="line-height:1em;writing-mode:lr-tb;stroke-width:0.26458332px"
+         id="tspan4604">3. 社内ポータル開発（Java）</tspan><tspan
+         sodipodi:role="line"
+         x="23.970413"
+         y="63.308624"
+         style="line-height:1em;writing-mode:lr-tb;stroke-width:0.26458332px"
+         id="tspan5075">4. 検索サイト開発（Ruby）</tspan><tspan
+         sodipodi:role="line"
+         x="23.970413"
+         y="74.102386"
+         style="line-height:1em;writing-mode:lr-tb;stroke-width:0.26458332px"
+         id="tspan4606">…</tspan><tspan
+         sodipodi:role="line"
+         x="23.970413"
+         y="84.685715"
+         style="line-height:1em;writing-mode:lr-tb;stroke-width:0.26458332px"
+         id="tspan4493" /><tspan
+         sodipodi:role="line"
+         x="23.970413"
+         y="95.269051"
+         style="line-height:1em;writing-mode:lr-tb;stroke-width:0.26458332px"
+         id="tspan4495" /></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:6.61458302px;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="171.31326"
+       y="30.682318"
+       id="text4521"><tspan
+         sodipodi:role="line"
+         x="171.31326"
+         y="30.682318"
+         style="stroke-width:0.26458332px"
+         id="tspan4523">オススメはRuby！</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1em;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="176.92592"
+       y="43.511257"
+       id="text4529"><tspan
+         sodipodi:role="line"
+         id="tspan4527"
+         x="176.92592"
+         y="43.511257"
+         style="line-height:1em;stroke-width:0.26458332px">1. SNS開発</tspan><tspan
+         sodipodi:role="line"
+         x="176.92592"
+         y="54.305016"
+         style="line-height:1em;stroke-width:0.26458332px"
+         id="tspan4578">2. 検索サイト開発</tspan><tspan
+         sodipodi:role="line"
+         x="176.92592"
+         y="64.888351"
+         style="line-height:1em;stroke-width:0.26458332px"
+         id="tspan4576">…</tspan></text>
+    <rect
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#204a87;stroke-width:0.79374999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       id="rect4690"
+       width="73.499123"
+       height="27.261494"
+       x="38.140305"
+       y="84.04258"
+       ry="0.30401948" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1em;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="42.416622"
+       y="97.133423"
+       id="text4549"><tspan
+         sodipodi:role="line"
+         id="tspan4547"
+         x="42.416622"
+         y="97.133423"
+         style="line-height:1em;stroke-width:0.26458332px">「Webアプリ」</tspan><tspan
+         sodipodi:role="line"
+         x="42.416622"
+         y="107.92719"
+         style="line-height:1em;stroke-width:0.26458332px"
+         id="tspan4551">での検索結果</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker5049)"
+       d="m 115.28274,98.918222 h 91.47023 v -21.92262"
+       id="path5039"
+       inkscape:connector-curvature="0" />
+    <rect
+       ry="0.30401948"
+       y="84.571747"
+       x="127.67561"
+       height="27.261494"
+       width="73.499123"
+       id="rect5077"
+       style="color:#000000;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#204a87;stroke-width:0.79374999;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1em;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       x="130.57106"
+       y="96.742958"
+       id="text4646"><tspan
+         sodipodi:role="line"
+         id="tspan4644"
+         x="130.57106"
+         y="96.742958"
+         style="line-height:1em;stroke-width:0.26458332px">さらに「Ruby」</tspan><tspan
+         sodipodi:role="line"
+         x="130.57106"
+         y="107.53672"
+         style="line-height:1em;stroke-width:0.26458332px"
+         id="tspan4648">で絞り込み</tspan></text>
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 165.74256,17.486606 V 79.047608"
+       id="path4705"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+       d="M 70.303572,81.531317 V 70.381019"
+       id="path4707"
+       inkscape:connector-curvature="0"
+       sodipodi:nodetypes="cc" />
+    <text
+       xml:space="preserve"
+       style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:5.64444447px;line-height:1em;font-family:sans-serif;-inkscape-font-specification:'sans-serif, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;baseline-shift:baseline;text-anchor:start;white-space:normal;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;opacity:1;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;fill:#000000;fill-opacity:1;fill-rule:nonzero;stroke:none;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate"
+       x="251.68954"
+       y="29.018814"
+       id="text5035"><tspan
+         sodipodi:role="line"
+         id="tspan5033"
+         x="251.68954"
+         y="29.018814"
+         style="fill:#000000;stroke:none;stroke-width:0.70555556">（5件）</tspan></text>
+  </g>
+</svg>
