@@ -752,10 +752,11 @@ Zstandard対応
 
 = Mroonga: おしらせ
 
-初心者向けの電子書籍ができました！
+(('tag:center'))
+初心者向けの電子書籍ができた！
 
 ((<"https://grnbook-ja.tumblr.com/"|URL:https://grnbook-ja.tumblr.com/>))\n
-@KitaitiMakoto
+by @KitaitiMakoto
 
 = Mroonga: 1
 
@@ -773,8 +774,26 @@ UDFを追加\n
 = (({mroonga_normalize}))
 
   * 正規化した文字列を返す
-  * UDFなので全文検索索引以外\n
-    でも使える
+  * 全文検索索引以外でも使える
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= 使い方
+
+  # coderay sql
+  SELECT mroonga_normalize('ｱﾊﾞ🍣㌠');
+  -- +------------------------------------+
+  -- | mroonga_normalize('ｱﾊﾞ?㌠')        |
+  -- +------------------------------------+
+  -- | アバ🍣サンチーム                    |
+  -- +------------------------------------+
+  -- 半角カタカナ→全角カタカナ（濁点含む）
+  -- 絵文字→そのまま
+  -- 合成済み文字（？）→展開
 
 == スライドプロパティ
 
@@ -868,9 +887,28 @@ UDFが便利に
 
    mroonga
 
-= マルチバイトなカラム名
+= 使い方：定義
 
-  * 例：日本語カラム名
+  # coderay sql
+  CREATE TABLE メモ (
+    内容 text,
+    FULLTEXT INDEX (内容)
+  ) ENGINE=Mroonga
+    DEFAULT CHARSET=utf8mb4;
+
+= 使い方：確認
+
+  # coderay sql
+  INSERT INTO メモ
+    VALUES ('むるんがは速い！');
+  SELECT * FROM メモ WHERE
+    MATCH (内容)
+    AGAINST ('+速い' IN BOOLEAN MODE);
+  -- +--------------------------+
+  -- | 内容                     |
+  -- +--------------------------+
+  -- | むるんがは速い！         |
+  -- +--------------------------+
 
 == スライドプロパティ
 
@@ -903,6 +941,60 @@ UDFが便利に
 : groonga-product
 
    mroonga
+
+= 使い方：定義
+
+  # coderay sql
+  CREATE TABLE tags (
+    name VARCHAR(128) PRIMARY KEY
+  ) ENGINE=Mroonga
+    DEFAULT CHARSET=utf8mb4;
+  CREATE TABLE memos (
+    tag VARCHAR(128),
+    FOREIGN KEY (tag) REFERENCES tags (name)
+  ) ENGINE=Mroonga
+    DEFAULT CHARSET=utf8mb4;
+
+= 使い方：(({INSERT}))
+
+  # coderay sql
+  INSERT INTO memos VALUES ('Mroonga');
+  -- ↑はエラー：ERROR 1452 (23000):
+  -- Cannot add or update a child row:
+  -- a foreign key constraint fails
+  -- (foreign record doesn't exist:
+  --  <tag>:<"Mroonga">)
+  INSERT INTO tags VALUES ('Mroonga');
+  INSERT INTO memos VALUES ('Mroonga');
+  -- ↑タグ追加後は成功
+  -- Query OK, 1 row affected (0.00 sec)
+
+= 使い方：(({UPDATE}))
+
+  # coderay sql
+  UPDATE memos SET tag = 'MySQL';
+  -- ↑はエラー：ERROR 1452 (23000):
+  -- Cannot add or update a child row:
+  -- a foreign key constraint fails
+  -- (foreign record doesn't exist:
+  --  <tag>:<"MySQL">)
+  INSERT INTO tags VALUES ('MySQL');
+  UPDATE memos SET tag = 'MySQL';
+  -- ↑タグ追加後は成功
+  -- Query OK, 1 row affected (0.00 sec)
+
+= 使い方：(({DELETE}))
+
+  # coderay sql
+  DELETE FROM tags WHERE name = 'MySQL';
+  -- ↑参照されているタグは消せない
+  -- ERROR 1451 (23000):
+  -- Cannot delete or update a parent row:
+  -- a foreign key constraint fails
+  -- (one or more child rows exist in <memos>)
+  DELETE FROM tags WHERE name = 'Mroonga';
+  -- ↑参照されていないタグは消せる
+  -- Query OK, 1 row affected (0.00 sec)
 
 = Mroonga: 6
 
