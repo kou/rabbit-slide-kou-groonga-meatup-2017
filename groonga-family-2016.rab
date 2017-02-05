@@ -415,7 +415,7 @@ Memcached\n
 
 HTTPでの\n
 タイムアウト\n
-対応
+サポート
 
 = タイムアウト
 
@@ -629,7 +629,8 @@ CC BY-SA 3.0 by Infopedian\n
 
 = Groonga: 25
 
-Zstandard対応
+Zstandard\n
+サポート
 
 = Zstandard
 
@@ -651,7 +652,7 @@ Zstandard対応
 
 選択的\n
 カラム圧縮\n
-対応
+サポート
 
 = 選択的カラム圧縮
 
@@ -879,7 +880,8 @@ UDFが便利に
 = Mroonga: 4
 
 マルチバイトな\n
-カラム名に対応
+カラム名を\n
+サポート
 
 == スライドプロパティ
 
@@ -919,7 +921,7 @@ UDFが便利に
 = Mroonga: 5
 
 (({FOREIGN KEY}))制約\n
-対応
+サポート
 
 == スライドプロパティ
 
@@ -927,7 +929,7 @@ UDFが便利に
 
    mroonga
 
-= (({FOREIGN KEY}))制約対応
+= (({FOREIGN KEY}))制約
 
   * (({INSERT}))
     * 存在しない参照の挿入はエラー
@@ -1000,7 +1002,7 @@ UDFが便利に
 
 最新\n
 MySQL・MariaDB\n
-対応
+サポート
 
 == スライドプロパティ
 
@@ -1008,11 +1010,11 @@ MySQL・MariaDB\n
 
    mroonga
 
-= 対応バージョン
+= サポートバージョン
 
-  * MySQL: 5.7.17対応
+  * MySQL: 5.7.17
     * 8.0.0は未確認
-  * MariaDB: 10.2.3対応
+  * MariaDB: 10.2.3
 
 == スライドプロパティ
 
@@ -1050,7 +1052,7 @@ MySQL・MariaDB\n
 = PGroonga: 1
 
 (({TABLESPACE}))\n
-対応
+サポート
 
 == スライドプロパティ
 
@@ -1075,7 +1077,17 @@ MySQL・MariaDB\n
 
 = 使い方
 
-TODO
+  # coderay sql
+  -- SSDを使うテーブルスペースを作成
+  CREATE TABLESPACE ssd
+    LOCATION '/ssd/data';
+  CREATE TABLE memos (
+    content text
+  ); -- テーブルはHDDに置く
+  CREATE INDEX content_search
+    ON memos
+    USING pgroonga (content)
+    TABLESPACE ssd; -- 索引はSSDに置く
 
 == スライドプロパティ
 
@@ -1085,7 +1097,8 @@ TODO
 
 = PGroonga: 2
 
-複合主キー対応
+複合主キー\n
+サポート
 
 == スライドプロパティ
 
@@ -1106,10 +1119,51 @@ TODO
 
    pgroonga
 
+= 使い方：複合主キー定義
+
+  # coderay sql
+  CREATE TABLE items (
+    company_id int,
+    product_id int,
+    description text,
+    -- 会社IDと製品IDを合わせて主キー
+    PRIMARY KEY (company_id, product_id)
+  );
+
+= 使い方：索引定義
+
+  # coderay sql
+  CREATE INDEX description_search
+    ON items
+    -- 複合主キーの全カラムを含める
+    USING pgroonga (company_id,
+                    product_id,
+                    description);
+
+= 使い方：検索
+
+  # coderay sql
+  -- 索引を使わないとスコアは常に0になる
+  SET enable_seqscan = 'no';
+  SELECT description, pgroonga.score(items)
+    FROM items
+    WHERE description @@ 'すごい';
+  --  description | score 
+  -- -------------+-------
+  --  すごい！    |     1   ← 0じゃない！
+  -- (1 row)
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
 = PGroonga: 3
 
 マルチバイトな\n
-カラム名に対応
+カラム名を\n
+サポート
 
 == スライドプロパティ
 
@@ -1120,7 +1174,24 @@ TODO
 = マルチバイトなカラム名
 
   * 例：日本語のカラム名
-  * 制限：UTF-8のみ対応
+  * 制限：UTF-8のみサポート
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 使い方
+
+  # coderay sql
+  -- 日本語テーブル名
+  CREATE TABLE メモ (
+    内容 text -- 日本語カラム名
+  );
+  CREATE INDEX 内容検索
+    ON メモ
+    USING pgroonga (内容);
 
 == スライドプロパティ
 
@@ -1130,7 +1201,8 @@ TODO
 
 = PGroonga: 4
 
-類似文書検索対応
+類似文書検索\n
+サポート
 
 == スライドプロパティ
 
@@ -1138,9 +1210,34 @@ TODO
 
    pgroonga
 
-= 使い方
+= 使い方：定義
 
-TODO
+  # coderay sql
+  CREATE TABLE memos (content text);
+  CREATE INDEX content_search
+    ON memos
+    USING pgroonga (
+      content
+      -- v2オペレータークラスを指定
+      pgroonga.text_full_text_search_ops_v2
+    ) -- 形態素解析ベースのトークナイザーを指定
+    WITH (tokenizer='TokenMecab');
+
+= 使い方：検索
+
+  # coderay sql
+  INSERT INTO memos VALUES
+    ('全文検索が速い'),
+    ('更新が速い'),
+    ('集計が速い');
+  SELECT * FROM memos
+    -- 類似文書検索用演算子は「&~?」
+    WHERE content &~? '全文検索どう？';
+  --     content     
+  -- ----------------
+  --  全文検索が速い
+  -- (1 row)
+  -- ↑同じ話題。「どう？」は含んでいない。
 
 == スライドプロパティ
 
@@ -1150,7 +1247,8 @@ TODO
 
 = PGroonga: 5
 
-前方一致検索対応
+前方一致検索\n
+サポート
 
 == スライドプロパティ
 
@@ -1158,9 +1256,39 @@ TODO
 
    pgroonga
 
-= 使い方
+= 使い方：定義
 
-TODO
+  # coderay sql
+  -- タグをヨミガナで検索
+  CREATE TABLE tags (reading text);
+  CREATE INDEX reading_search
+    ON tags
+    USING pgroonga (
+      reading
+      -- ↓のオペレータークラスを指定
+      pgroonga.text_term_search_ops_v2
+    );
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 使い方：検索
+
+  # coderay sql
+  INSERT INTO tags VALUES
+    ('ゼンブンケンサク'),
+    ('ゼンポウイッチ'),
+    ('シュウケイ');
+  SELECT * FROM tags
+    -- 前方一致用演算子は「&^」
+    WHERE reading &^ 'ゼン';
+  --      reading      
+  -- ------------------
+  --  ゼンブンケンサク
+  --  ゼンポウイッチ
 
 == スライドプロパティ
 
@@ -1170,7 +1298,8 @@ TODO
 
 = PGroonga: 6
 
-前方一致RK検索対応
+前方一致RK検索\n
+サポート
 
 == スライドプロパティ
 
@@ -1178,9 +1307,26 @@ TODO
 
    pgroonga
 
-= 使い方
+= RK：ローマ字・カナ
 
-TODO
+  * ローマ字（zen）で\n
+    カナ（ゼンブンケンサク）を\n
+    前方一致検索
+    * = 前方一致RK検索
+  * 用途：入力補完
+
+= 使い方：検索
+
+  # coderay sql
+  -- データは前方一致検索と同じ
+  SELECT * FROM tags
+    -- 前方一致RK用演算子は「&^~」
+    -- 「ゼン」でも「ぜん」でも同じ結果
+    WHERE reading &^~ 'zen';
+  --      reading      
+  -- ------------------
+  --  ゼンブンケンサク
+  --  ゼンポウイッチ
 
 == スライドプロパティ
 
@@ -1201,14 +1347,41 @@ TODO
 
 = (({pgroonga.highlight_html}))
 
-  * テキスト中のキーワードをハイライト
-  * TODO
+  * キーワードをハイライト
+  * 用途：検索結果の表示
 
-(({pgroonga.query_extract_keywords}))もあわせて
+= 使い方：基本
 
-= 使い方
+  # coderay sql
+  SELECT pgroonga.highlight_html(
+    'Groongaは速い',   -- ハイライト対象
+    ARRAY['Groonga']); -- キーワードは複数指定可
+  --                highlight_html               
+  -- --------------------------------------------
+  --  <span class="keyword">Groonga</span>は速い
+  -- (1 row)
+  -- ↑キーワードは<span>で囲まれる。
 
-TODO
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
+= 使い方：応用
+
+  # coderay sql
+  SELECT pgroonga.highlight_html(
+    'Groongaは速い',   -- ハイライト対象
+    -- クエリーからキーワードを抽出
+    pgroonga.query_extract_keywords(
+      'Groonga OR PostgreSQL')
+  );
+  --                highlight_html               
+  -- --------------------------------------------
+  --  <span class="keyword">Groonga</span>は速い
+  -- (1 row)
+  -- ↑キーワードは<span>で囲まれる。
 
 == スライドプロパティ
 
@@ -1218,7 +1391,8 @@ TODO
 
 = PGroonga: 8
 
-ヒット件数の見積対応
+ヒット件数の\n
+見積サポート
 
 == スライドプロパティ
 
@@ -1244,7 +1418,7 @@ TODO
 ストリーミング\n
 レプリ\n
 ケーション\n
-対応
+サポート
 
 == スライドプロパティ
 
@@ -1254,8 +1428,10 @@ TODO
 
 = レプリケーション
 
-  * 検索性能が足りないときに\n
-    検索専用ノードを増やして対応できる
+  * リアルタイムでデータコピー
+  * 用途例：検索性能向上
+    * 検索性能が足りない！
+    * →検索専用ノード追加で対応
 
 (('tag:center'))
 (('tag:small'))
@@ -1270,7 +1446,7 @@ TODO
 = PGroonga: 10
 
 Zstandard\n
-対応
+サポート
 
 == スライドプロパティ
 
@@ -1280,7 +1456,9 @@ Zstandard\n
 
 = 使い方
 
-TODO
+  * ユーザーはなにもしなくてよい
+  * 自動で使う
+    * テキストカラムで利用
 
 == スライドプロパティ
 
@@ -1291,7 +1469,7 @@ TODO
 = PGroonga: 11
 
 生Groonga検索\n
-対応強化
+サポート強化
 
 == スライドプロパティ
 
@@ -1301,12 +1479,26 @@ TODO
 
 = 生Groonga検索
 
-  * PostgreSQLを介さずにGroongaで検索
+  * PostgreSQLを介さずに\n
+    Groongaで検索
     * (({pgroonga.command}))を使う
+  * 課題：セキュリティー
+    * インジェクション怖い…
+
+= セキュリティー対策
+
+自動エスケープ
 
 = 使い方
 
-TODO
+  # coderay sql
+  SELECT pgroonga.command(
+    'select',
+    ARRAY[ -- 配列で渡すと自動エスケープ
+      'table', pgroonga.table_name('memos'),
+      -- ...,  ↓自動エスケープ
+      'query', 'ユーザーからの入力'
+    ]);
 
 == スライドプロパティ
 
@@ -1334,4 +1526,3 @@ TODO
     * ((<"https://grnbook-ja.tumblr.com/"|URL:https://grnbook-ja.tumblr.com/>))\n
       by @KitaitiMakoto
   * PGroongaも凄くよくなった
-
