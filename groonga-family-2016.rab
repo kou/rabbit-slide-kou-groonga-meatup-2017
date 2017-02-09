@@ -13,6 +13,48 @@
 : theme
    groonga
 
+= 最近のニュース（1）
+
+Groonga 7.0.0\n
+リリース！
+
+= 最近のニュース（2）
+
+Mroonga 7.00\n
+リリース！
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= 最近のニュース（3）
+
+MySQL Workbench\n
+(('note:（Oracle製のGUIなMySQL管理ツール）'))\n
+Mroongaを\n
+サポート！
+
+== スライドプロパティ
+
+: groonga-product
+
+   mroonga
+
+= 最近のニュース（4）
+
+Zulip\n
+(('note:（Dropbox製のチャットツール）'))\n
+PGroongaを\n
+サポート！
+
+== スライドプロパティ
+
+: groonga-product
+
+   pgroonga
+
 = 2016年の概要
 
   * Groongaが凄くよくなった
